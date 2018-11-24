@@ -1,15 +1,15 @@
 from DispatchStrategy import ManageSit
-from GeoInfo import GeoPosition, VictimRegion, VolunteersCenter
+from GeoInfo import GeoPosition, VictimRegion, VolunteersCenter, VictimInfo
 
 victimRegions = []
 centers = []
 
 
-victimRegions.append(VictimRegion(GeoPosition(44, 20, 4), 100))
-victimRegions.append(VictimRegion(GeoPosition(46, 23, 4), 10232))
-victimRegions.append(VictimRegion(GeoPosition(44, 28, 4), 102))
-victimRegions.append(VictimRegion(GeoPosition(47, 27, 4), 1))
-victimRegions.append(VictimRegion(GeoPosition(45, 25, 4), 10223122))
+victimRegions.append(VictimInfo(GeoPosition(44, 20, 4)))
+victimRegions.append(VictimInfo(GeoPosition(46, 23, 4)))
+victimRegions.append(VictimInfo(GeoPosition(44, 28, 4)))
+victimRegions.append(VictimInfo(GeoPosition(47, 27, 4)))
+victimRegions.append(VictimInfo(GeoPosition(45, 25, 4)))
 
 centers.append(VolunteersCenter(GeoPosition(45.4, 21, 4), 100))
 centers.append(VolunteersCenter(GeoPosition(46, 24, 4), 10232))
