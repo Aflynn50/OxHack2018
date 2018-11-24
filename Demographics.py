@@ -41,8 +41,16 @@ def getVictimRegion(victims):
             if population>0:
                 thisRegion = VictimRegion(victim.location,population)
                 thisRegionCount = RegionCount(thisRegion,1)
-                regionCounts[locationAddress] = RegionCount(thisRegion, 1)
-
+                regionCounts[locationAddress] = thisRegionCount
+            else:
+                longituteFloat = float(location['lon'])
+                latitudeFloat = float(location['lat'])
+                key = str(int(longituteFloat*4.0))+", "+str(int(latitudeFloat*4.0))
+                if key in regionCounts:
+                    regionCounts[key].reportCount += 1
+                else:
+                    thisRegionCount = RegionCount(thisRegion, 1)
+                    regionCounts[key] = thisRegionCount
 
 
     finalRegions = []
