@@ -46,11 +46,3 @@ def getVictimRegion(victims):
         if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.05:
             finalRegions.append(thisRegionCount.region)
     return finalRegions
-
-victimPos0 = GeoPosition(51.5074, 12.1278,1)
-victim0 = VictimInfo(victimPos0)
-victimPos1 = GeoPosition(51.5072, 12.1278,1)
-victim1 = VictimInfo(victimPos1)
-groupedRegions = getVictimRegion([victim0,victim1])
-print(groupedRegions[0].populationCount)
-print(len(groupedRegions))
