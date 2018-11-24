@@ -17,7 +17,9 @@ def getVictimRegion(victims):
 
     allLocations = rg.search(allCoords,mode=1)
 
-    for location in allLocations:
+    for i in range (len(allLocations)):
+        location = allLocations[i]
+        victim = victims[i]
         locationAddress = location['name']+", "+location['admin1']+", "+location['admin2']
         if locationAddress in regionCounts:
             regionCounts[locationAddress].reportCount += 1
@@ -37,18 +39,19 @@ def getVictimRegion(victims):
                     population = int(population[1:])
                 except:
                     pass
-                i = 0
             if population>0:
                 thisRegion = VictimRegion(victim.location,population)
                 thisRegionCount = RegionCount(thisRegion,1)
                 regionCounts[locationAddress] = thisRegionCount
             else:
+                population = 1
                 longituteFloat = float(location['lon'])
                 latitudeFloat = float(location['lat'])
                 key = str(int(longituteFloat*4.0))+", "+str(int(latitudeFloat*4.0))
                 if key in regionCounts:
                     regionCounts[key].reportCount += 1
                 else:
+                    thisRegion = VictimRegion(victim.location, population)
                     thisRegionCount = RegionCount(thisRegion, 1)
                     regionCounts[key] = thisRegionCount
 
