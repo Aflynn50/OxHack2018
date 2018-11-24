@@ -5,6 +5,12 @@ class GeoPosition:
         self.radius = 0
 
 
-class VictumInfo:
+class VictimInfo:
     def __init__(self):
         self.location = GeoPosition()
+
+
+class VictimRegion:
+    def __init__(self):
+        self.location = GeoPosition
+        self.populationCount = 0
