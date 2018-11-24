@@ -5,7 +5,7 @@ import math
 
 class ManageSit:
     def __init__(self, victims, centers):
-        self.affectedRegions = dem.getRegions(victims)
+        self.affectedRegions = victims  # TODO: Use demographics here
         self.centers = centers
 
     def addCenter(self, center):
@@ -17,10 +17,10 @@ class ManageSit:
     @staticmethod
     def computeDistance(pos1, pos2):
         R = 6371
-        ph1 = pos1.latitude.toRadians()
-        ph2 = pos2.latitude.toRadians()
-        deltph = (pos2.latitude - pos1.latitude).toRadians()
-        deltlam = (pos2.longitude - pos1.longitude).toRadians()
+        ph1 = math.radians(pos1.latitude)
+        ph2 = math.radians(pos2.latitude)
+        deltph = math.radians(pos2.latitude - pos1.latitude)
+        deltlam = math.radians(pos2.longitude - pos1.longitude)
         a = math.sin(deltph / 2) * math.sin(deltph / 2) + \
             math.cos(ph1) * math.cos(ph2) * \
             math.sin(deltlam / 2) * math.sin(deltlam / 2)
@@ -31,7 +31,7 @@ class ManageSit:
         deltaDist = []
         for idxAff, affectedRegion in enumerate(self.affectedRegions):
             for idxCent, center in enumerate(self.centers):
-                deltaDist.append((self.computeDistance(affectedRegion.location, center),
+                deltaDist.append((self.computeDistance(affectedRegion.location, center.location),
                                   idxAff,
                                   idxCent))
         heapq.heapify(deltaDist)
