@@ -1,4 +1,5 @@
 from TwitterSearch import *
+import requests
 
 class GeoPosition:
     def __init__(self):
@@ -10,9 +11,14 @@ class GeoPosition:
 
 
 class VictimInfo:
+    
+
+    
+    
+    
     def __init__(self):
         self.geoPos = GeoPosition()
-        geolocations = [[0 for i in range(0,self.geoPos.x)] for j in range(0,self.geoPos.y)]
+        geolocations = [[[] for i in range(0,self.geoPos.x)] for j in range(0,self.geoPos.y)]
         for i in range(0,self.geoPos.x):
             for j in range(0,self.geoPos.y):
                 self.tso = TwitterSearchOrder()
@@ -24,8 +30,40 @@ class VictimInfo:
                                                    access_token_secret="g8RmQzuyIA0vgxfCgTcMsSshbWYGmhmKfIO3320TQ6isY")
         for tweet in self.searchResults.search_tweets_iterable(self.tso):
             #print('@%s tweeted: %s' % (tweet['user']['screen_name'],tweet['text']))
-            geolocations[i][j] += 1
+            geolocations[i][j].append(tweet)
+        
+        geolocations = self.azureApi(geolocations)
+        
         print(geolocations)
+
+    def azureApi(self, geolocs):
+        azurekey = "29c7bf1a559d4d2e8e83db07740b33eb"
+        text_analytics_base_url = "https://uksouth.api.cognitive.microsoft.com/text/analytics/v2.0/"
+        sentiment_api_url = text_analytics_base_url + "sentiment"
+        values = []
+        for x in geolocs:
+            for y in x:
+                for z in y:
+                    values.append({'id': z['id'], 'text': z['text'], 'language': 'en'})
+        
+        documents = { 'documents' : values}
+
+        headers   = {"Ocp-Apim-Subscription-Key": azurekey}
+        response  = requests.post(sentiment_api_url, headers=headers, json=documents)
+        sentiments = response.json()
+        threshold = 0.25
+        unhappytweets = [x['id'] for x in sentiments['documents'] if x['score'] < threshold]
+        
+        for x in geolocs:
+            for y in x:
+                for z in y:
+                    if z['id'] in unhappytweets:
+                        y.remove(z)
+        return geolocs
+
+
+                   
+
 
 v = VictimInfo()
 
