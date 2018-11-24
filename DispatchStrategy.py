@@ -5,7 +5,7 @@ import math
 
 class ManageSit:
     def __init__(self, victims, centers):
-        self.affectedRegions = victims  # TODO: Use demographics here
+        self.affectedRegions = dem.getVictimRegion(victims)
         self.centers = centers
 
     def addCenter(self, center):
