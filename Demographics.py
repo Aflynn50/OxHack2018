@@ -14,28 +14,28 @@ def getVictimRegion(victims):
     for victim in victims:
         coordsString = str(victim.location.longitude) + ", "+str(victim.location.latitude)
         location = geolocator.reverse(coordsString)
-        addressParts = location.address.split(", ")
-        population = -1
-        for part in addressParts:
+        if location.address in regionCounts:
+            regionCounts[location.address].reportCount += 1
+        else:
+            addressParts = location.address.split(", ")
+            population = -1
+            for part in addressParts:
+                if population>0:
+                    break
+                wikipage = None
+                wikidataPage = None
+                try:
+                    wikipage = wptools.page(part).get_parse()
+                    client = Client()
+                    wikidataPage = client.get(wikipage.data['wikibase'],load=True)
+                    population = wikidataPage.data['claims']['P1082'][0]['mainsnak']['datavalue']['value']['amount']
+                    population = int(population[1:])
+                except:
+                    pass
+                i = 0
             if population>0:
-                break
-            wikipage = None
-            wikidataPage = None
-            try:
-                wikipage = wptools.page(part).get_parse()
-                client = Client()
-                wikidataPage = client.get(wikipage.data['wikibase'],load=True)
-                population = wikidataPage.data['claims']['P1082'][0]['mainsnak']['datavalue']['value']['amount']
-                population = int(population[1:])
-            except:
-                pass
-            i = 0
-        if population>0:
-            thisRegion = VictimRegion(victim.location,population)
-            thisRegionCount = RegionCount(thisRegion,1)
-            if location.address in regionCounts:
-                regionCounts[location.address].reportCount += 1
-            else:
+                thisRegion = VictimRegion(victim.location,population)
+                thisRegionCount = RegionCount(thisRegion,1)
                 regionCounts[location.address] = RegionCount(thisRegion, 1)
 
 
@@ -46,11 +46,3 @@ def getVictimRegion(victims):
         if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.05:
             finalRegions.append(thisRegionCount.region)
     return finalRegions
-
-victimPos0 = GeoPosition(51.5074, 12.1278,1)
-victim0 = VictimInfo(victimPos0)
-victimPos1 = GeoPosition(51.5072, 12.1278,1)
-victim1 = VictimInfo(victimPos1)
-groupedRegions = getVictimRegion([victim0,victim1])
-print(groupedRegions[0].populationCount)
-print(len(groupedRegions))
