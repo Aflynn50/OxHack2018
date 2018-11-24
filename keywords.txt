@@ -1,0 +1,3 @@
+contains:tornado OR contains:EF OR contains:hail OR contains:storm OR contains:damage OR contains:injur OR
+contains:kill OR contains:wind OR contains:thunder OR contains:water OR contains:flood OR contains:rain OR
+contains:wound OR contains:loss OR contains:help OR contains:save
