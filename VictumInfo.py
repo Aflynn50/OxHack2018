@@ -1,6 +1,9 @@
+import os
+import sys
+sys.path.append(os.getcwd())
 from TwitterSearch import *
 import requests
-from GeoInfo import VictimInfo, GeoInfo 
+from GeoInfo import VictimInfo, GeoPosition 
 
 class SearchFrame:
     def __init__(self):
@@ -34,9 +37,9 @@ def getVictims():
     for i in range(0,frame.x):
         for j in range(0,frame.y):
             for tweet in geolocations[i][j]:
-                values.append(VictimInfo(GeoInfo(frame.longitude + (i*frame.diameter), frame.latitude + (j*frame.diameter), int(frame.diameter/2))))
+                returnlist.append(VictimInfo(GeoPosition(frame.longitude + (i*frame.diameter), frame.latitude + (j*frame.diameter), int(frame.diameter/2))))
     
-    return values
+    return returnlist
 
 
 def azureApi(geolocs):
