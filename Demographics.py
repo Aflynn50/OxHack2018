@@ -1,6 +1,5 @@
 from geopy.geocoders import Nominatim
 from GeoInfo import GeoPosition,VictimInfo,VictimRegion
-import wikipedia
 import wptools
 from wikidata.client import Client
 
