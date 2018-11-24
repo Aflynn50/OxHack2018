@@ -15,9 +15,11 @@ def getVictimRegion(victims):
         allCoords.append( (victim.location.longitude,victim.location.latitude) )
     regionCounts = {}
 
-    allLocations = rg.search(allCoords)
+    allLocations = rg.search(allCoords,mode=1)
 
-    for location in allLocations:
+    for i in range (len(allLocations)):
+        location = allLocations[i]
+        victim = victims[i]
         locationAddress = location['name']+", "+location['admin1']+", "+location['admin2']
         if locationAddress in regionCounts:
             regionCounts[locationAddress].reportCount += 1
@@ -37,17 +39,26 @@ def getVictimRegion(victims):
                     population = int(population[1:])
                 except:
                     pass
-                i = 0
             if population>0:
                 thisRegion = VictimRegion(victim.location,population)
                 thisRegionCount = RegionCount(thisRegion,1)
-                regionCounts[locationAddress] = RegionCount(thisRegion, 1)
-
+                regionCounts[locationAddress] = thisRegionCount
+            else:
+                population = 1
+                longituteFloat = float(location['lon'])
+                latitudeFloat = float(location['lat'])
+                key = str(int(longituteFloat*4.0))+", "+str(int(latitudeFloat*4.0))
+                if key in regionCounts:
+                    regionCounts[key].reportCount += 1
+                else:
+                    thisRegion = VictimRegion(victim.location, population)
+                    thisRegionCount = RegionCount(thisRegion, 1)
+                    regionCounts[key] = thisRegionCount
 
 
     finalRegions = []
     for countedRegionName in regionCounts:
         thisRegionCount = regionCounts[countedRegionName]
-        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.5:
+        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.00:
             finalRegions.append(thisRegionCount.region)
     return finalRegions
