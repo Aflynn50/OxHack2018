@@ -41,12 +41,22 @@ class ManageSit:
         assigned = []
         while deltaDist:
             dist, aff, cent = heapq.heappop(deltaDist)
-            if aff in seenAffected or cent in seenCenters:
+            if (aff in seenAffected) or (cent in seenCenters):
                 continue
 
+            affPopCount = self.affectedRegions[aff].populationCount
+            centResNum = self.centers[cent].responderNumbers
+
+            if affPopCount * 0.1 >= centResNum:
+                seenCenters.add(cent)
+                self.affectedRegions[aff].populationCount -= centResNum * 10
+            else:
+                seenAffected.add(aff)
+                self.centers[cent].responderNumbers -= math.ceil(affPopCount * 0.1)
+                if self.centers[cent].responderNumbers == 0:
+                    seenCenters.add(cent)
+
             assigned.append((aff, cent))
-            seenCenters.add(cent)
-            seenAffected.add(aff)
 
         newAff = []
         for idxAff, affectedRegion in enumerate(self.affectedRegions):
