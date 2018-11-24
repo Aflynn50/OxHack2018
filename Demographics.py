@@ -1,7 +1,8 @@
-from geopy.geocoders import Nominatim
+#from geopy.geocoders import Nominatim
 from GeoInfo import GeoPosition,VictimInfo,VictimRegion
 import wptools
 from wikidata.client import Client
+import reverse_geocoder as rg
 
 class RegionCount:
     def __init__(self,region,reportCount):
@@ -9,15 +10,19 @@ class RegionCount:
         self.reportCount = reportCount
 
 def getVictimRegion(victims):
-    regionCounts = {}
-    geolocator = Nominatim(user_agent="oxHack")
+    allCoords = []
     for victim in victims:
-        coordsString = str(victim.location.longitude) + ", "+str(victim.location.latitude)
-        location = geolocator.reverse(coordsString)
-        if location.address in regionCounts:
-            regionCounts[location.address].reportCount += 1
+        allCoords.append( (victim.location.longitude,victim.location.latitude) )
+    regionCounts = {}
+
+    allLocations = rg.search(allCoords)
+
+    for location in allLocations:
+        locationAddress = location['name']+", "+location['admin1']+", "+location['admin2']
+        if locationAddress in regionCounts:
+            regionCounts[locationAddress].reportCount += 1
         else:
-            addressParts = location.address.split(", ")
+            addressParts = locationAddress.split(", ")
             population = -1
             for part in addressParts:
                 if population>0:
@@ -36,13 +41,13 @@ def getVictimRegion(victims):
             if population>0:
                 thisRegion = VictimRegion(victim.location,population)
                 thisRegionCount = RegionCount(thisRegion,1)
-                regionCounts[location.address] = RegionCount(thisRegion, 1)
+                regionCounts[locationAddress] = RegionCount(thisRegion, 1)
 
 
 
     finalRegions = []
     for countedRegionName in regionCounts:
         thisRegionCount = regionCounts[countedRegionName]
-        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.05:
+        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.5:
             finalRegions.append(thisRegionCount.region)
     return finalRegions
