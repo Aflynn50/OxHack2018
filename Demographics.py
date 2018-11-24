@@ -39,8 +39,7 @@ def getVictimRegion(victims):
             else:
                 regionCounts[location.address] = RegionCount(thisRegion, 1)
 
-        #print(location.address)
-        #print(population)
+
 
     finalRegions = []
     for countedRegionName in regionCounts:
