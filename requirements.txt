@@ -3,3 +3,4 @@ wptools
 reverse_geocoder
 TwitterSearch
 requests
+pycurl
