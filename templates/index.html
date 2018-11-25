@@ -8,14 +8,49 @@
     </head>
     <body>
     <div class="section group">
-      <div class="col span_map" id="map">
-      This is column 2
+      <div class="col first_row">
+        <p class="title">Dashboard - Tsunami in Philippines</p>
       </div>
-      <div class="col span_tweets">
-      This is column 1
+    </div>
+    <div class="section group">
+      <div class="col span_map" id="map">
+
+      </div>
+      <div class="col span_tweets" id="tweet_updates">
+        <p class="upd">Live updates</p>
       </div>
     </div>
 
+    <script type="text/javascript">
+      $.getJSON( "http://127.0.0.1:8000/tweets.json", function( data ) {
+          $.each(data, function(i, tweet) {
+            // Before we continue we check that we got data
+            console.log(tweet);
+            if(tweet.text !== undefined) {
+            // Calculate how many hours ago was the tweet posted
+            var date_tweet = new Date(tweet.created_at);
+            var date_now   = new Date();
+            var date_diff  = date_now - date_tweet;
+            var hours      = Math.round(date_diff/(1000*60*60));
+
+            // Build the html string for the current tweet
+            var tweet_html = '<div class="twitter-tweet" style="font-family:Georgia;">';
+             
+            tweet_html    += tweet.text;
+            tweet_html    += '<div class="tweet_hours">';
+            tweet_html    += '<a href="http://www.twitter.com/';
+            tweet_html    += tweet.user.name + '/status/' + tweet.id + '">' + hours;
+            tweet_html    += ' hours ago</a></div>';
+
+            // Append html string to tweet_container div
+            $('#tweet_updates').append(tweet_html);
+          }
+ 
+                  // // hide the loading message
+                  // jQuery('#loadingmessage').hide(); 
+            });
+        });
+    </script>
 
     <script type="text/javascript">
       // This example creates a simple polygon representing the Bermuda Triangle.
@@ -46,11 +81,11 @@
             unusedCenters.push( val );
           });
         });
-        // $.getJSON( "http://127.0.0.1:8000/test2.json", function( data ) {
-        //   $.each( data, function( key, val ) {
-        //     notReachedVictims.push( val );
-        //   });
-        // });
+        $.getJSON( "http://127.0.0.1:8000/test2.json", function( data ) {
+          $.each( data, function( key, val ) {
+            notReachedVictims.push( val );
+          });
+        });
 
         var lineSymbol = {
           path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
@@ -86,6 +121,22 @@
           });
           var infowindow = new google.maps.InfoWindow();
           createListener(infowindow, circle, String(unusedCenters[i][1]), map)
+          circle.setMap(map);
+        }
+
+        for (var i = 0; i < notReachedVictims.length; i++) {
+          var circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: notReachedVictims[i][0],
+            radius: Math.sqrt(notReachedVictims[i][1]) * 10000
+          });
+          var infowindow = new google.maps.InfoWindow();
+          createListener(infowindow, circle, String(notReachedVictims[i][1]), map)
           circle.setMap(map);
         }
 
