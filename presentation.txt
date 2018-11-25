@@ -2,4 +2,4 @@ We are the team demonic non-deterministcs
 
 We developed a web application that answers the JP Morgan challenge.
 
-Our web app scrapes real time data from twitter, using 
+Our web app scrapes real time data from twitter, using
