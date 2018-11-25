@@ -1,5 +1,17 @@
 We are the team demonic non-deterministcs
 
-We developed a web application that answers the JP Morgan challenge.
+We developed a web application that answers the JP Morgan challenge, and the challenge from Microsoft
 
-Our web app scrapes real time data from twitter, using
+Our web app scrapes real time data from twitter,
+        and analyze using keywords analysis as well as the sentiment analysis provided by Microsoft Azure
+
+We selects the twitter posts that indicate that someone is in danger,
+        and then group them according to geological metadata in the posts
+
+Using the geological metadata, we identify all the districts/areas that is potentially in danger,
+        and we estimate the number of people in danger by considering the population count in that area,
+        as well as the number of tweets that indicate danger sent from that area
+
+Using these identified regions in danger, and given as input a list of centers where responders are located,
+        we developed an algorithm that assigns responders to regions in danger. The algorithm optimizes the efficiency of
+        saving people by minimizing the ratio of (population reached by responders)/(distance traveled by responders). 
