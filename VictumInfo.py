@@ -21,7 +21,7 @@ def getVictims():
         for j in range(0,frame.y):
             tso = TwitterSearchOrder()
             tso.set_keywords(["tornado", "EF", "hail", "storm", "damage", "injur", "kill", "wind", "thunder", "water", "flood", "rain", "wound", "loss", "help", "save"], or_operator=True)
-            tso.set_geocode(float(frame.longitude + (i*frame.diameter)), float(frame.latitude + (j*frame.diameter)), int(frame.diameter/2))
+            tso.set_geocode(frame.longitude + milesToLat(i*frame.diameter), frame.latitude + milesToLat(j*frame.diameter), int(frame.diameter/2))
             searchResults = TwitterSearch(consumer_key="eoe5TmgDTsmI0E2NpSrt7KPfg",
                                                consumer_secret="onNO7vobeUw1piKWfmXQJwmpMKrQbzRWTeXFjKo6nZwipCPJ3r",
                                                access_token="2491643690-UVYiYfoc3VXyQ4dc5B2VcSCMTU0hsl0www8dB7n",
@@ -68,17 +68,25 @@ def azureApi(geolocs):
     return geolocs
 
 
-               
-print(getVictims())
+def milesToLat(x):
+    return x/69.2
 
 
+    
+def getUpdateTweets():
+    frame = SearchFrame()
+    tso = TwitterSearchOrder()
+    tso.set_keywords(["breaking", "news", "BREAKING NEWS", "NEWS", "update", "development"], or_operator=True)
+    tso.set_geocode(frame.longitude + milesToLat((frame.x /2 )*frame.diameter), frame.latitude + milesToLat((frame.x / 2)*frame.diameter), int((frame.x /2 )*frame.diameter))
+    searchResults = TwitterSearch(consumer_key="eoe5TmgDTsmI0E2NpSrt7KPfg",
+                                       consumer_secret="onNO7vobeUw1piKWfmXQJwmpMKrQbzRWTeXFjKo6nZwipCPJ3r",
+                                       access_token="2491643690-UVYiYfoc3VXyQ4dc5B2VcSCMTU0hsl0www8dB7n",
+                                       access_token_secret="g8RmQzuyIA0vgxfCgTcMsSshbWYGmhmKfIO3320TQ6isY")
+    
+    returnlist = []
+    for tweet in searchResults.search_tweets_iterable(tso):
+        returnlist.append(tweet)
+   
+    return returnlist
 
-azurekey = "29c7bf1a559d4d2e8e83db07740b33eb"
-text_analytics_base_url = "https://uksouth.api.cognitive.microsoft.com/text/analytics/v2.0/"
-sentiment_api_url = text_analytics_base_url + "sentiment"
-documents = { 'documents' : [{'id':1,'text':"I fucking love my bloody mother",'language':'en'}]}
-
-headers   = {"Ocp-Apim-Subscription-Key": azurekey}
-response  = requests.post(sentiment_api_url, headers=headers, json=documents)
-sentiments = response.json()
-print(sentiments)
+print(getUpdateTweets())
