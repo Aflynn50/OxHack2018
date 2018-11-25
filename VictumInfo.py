@@ -58,8 +58,9 @@ def azureApi(geolocs):
     response  = requests.post(sentiment_api_url, headers=headers, json=documents)
     sentiments = response.json()
     threshold = 0.25
-    unhappytweets = [x['id'] for x in sentiments['documents'] if x['score'] < threshold]
-    
+    #unhappytweets = [x['id'] for x in sentiments['documents'] if x['score'] < threshold]
+    unhappytweets = []
+
     for x in geolocs:
         for y in x:
             for z in y:
