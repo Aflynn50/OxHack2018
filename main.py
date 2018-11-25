@@ -2,6 +2,9 @@ from DispatchStrategy import ManageSit
 import VictumInfo as vi
 from GeoInfo import VolunteersCenter, GeoPosition
 if __name__ == '__main__':
+
+    temp = vi.getUpdateTweets()
+
     victims = vi.getVictims()
 
     centers = []

@@ -61,6 +61,6 @@ def getVictimRegion(victims):
     finalRegions = []
     for countedRegionName in regionCounts:
         thisRegionCount = regionCounts[countedRegionName]
-        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.00: #  TODO: threshold tbd
+        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 1.00: #  TODO: threshold tbd
             finalRegions.append(thisRegionCount.region)
     return finalRegions

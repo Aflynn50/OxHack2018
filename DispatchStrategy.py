@@ -71,7 +71,7 @@ class ManageSit:
         newCenters = []
         for idxCent, center in enumerate(self.centers):
             if idxCent not in seenCenters:
-                newAff.append(center)
+                newCenters.append(center)
         self.centers = newCenters
 
         return assigned

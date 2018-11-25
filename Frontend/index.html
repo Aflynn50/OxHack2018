@@ -3,8 +3,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <title>Oxaster - Dashboard</title>
-        <link href="{{ url_for('static',filename='styles/main.css')}}" rel="stylesheet" type="text/css">
-        <script src="{{ url_for('static',filename='js/jquery.min.js')}}"></script>
+        <link href="styles/main.css" rel="stylesheet" type="text/css">
+        <script src="js/jquery.min.js"></script>
     </head>
     <body>
     <div class="section group">
@@ -22,7 +22,7 @@
     </div>
 
     <script type="text/javascript">
-      $.getJSON( "{{ url_for('static',filename='tweets.json')}}", function( data ) {
+      $.getJSON( "http://127.0.0.1:8000/tweets.json", function( data ) {
           $.each(data, function(i, tweet) {
             // Before we continue we check that we got data
             console.log(tweet);
@@ -71,18 +71,17 @@
           async: false
         });
 
-        $.getJSON( "http://127.0.0.1:5000/getDispatches", function( data ) {
+        $.getJSON( "http://127.0.0.1:8000/test.json", function( data ) {
           $.each( data, function( key, val ) {
             pairs.push( val );
           });
         });
-        $.getJSON( "http://127.0.0.1:5000/getIdleCenters", function( data ) {
+        $.getJSON( "http://127.0.0.1:8000/test1.json", function( data ) {
           $.each( data, function( key, val ) {
             unusedCenters.push( val );
-            console.log(val)
           });
         });
-        $.getJSON( "http://127.0.0.1:5000/getUnresolvedRegions", function( data ) {
+        $.getJSON( "http://127.0.0.1:8000/test2.json", function( data ) {
           $.each( data, function( key, val ) {
             notReachedVictims.push( val );
           });

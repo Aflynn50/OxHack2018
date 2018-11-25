@@ -1,5 +1,5 @@
 class GeoPosition:
-    def __init__(self, longitude, latitude, radius):
+    def __init__(self,latitude,longitude, radius):
         self.longitude = longitude
         self.latitude = latitude
         self.radius = radius

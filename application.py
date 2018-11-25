@@ -8,19 +8,25 @@ from GeoInfo import VolunteersCenter, GeoPosition
 import json
 
 
+thousand = 1
 centers = []
-centers.append(VolunteersCenter(GeoPosition(45.4, 21, 4), 1))
-centers.append(VolunteersCenter(GeoPosition(46, 24, 4), 1))
-centers.append(VolunteersCenter(GeoPosition(44.5, 28, 4), 1))
-centers.append(VolunteersCenter(GeoPosition(47, 27.5, 4), 1))
-centers.append(VolunteersCenter(GeoPosition(44.3, 28, 4), 1))
+centers.append(VolunteersCenter(GeoPosition(45.4, 21, 4), thousand))
+centers.append(VolunteersCenter(GeoPosition(46, 24, 4), thousand))
+centers.append(VolunteersCenter(GeoPosition(44.5, 28, 4), thousand))
+centers.append(VolunteersCenter(GeoPosition(47, 27.5, 4), thousand))
+centers.append(VolunteersCenter(GeoPosition(44.3, 28, 4), thousand))
 
 disp = -1
 assocs = -1
 
 @app.route("/")
 def index():
-    return "yoyoyo"
+    return render_template("index.html")
+
+
+@app.route("/getTweets")
+def getTweets():
+    return json.dumps(vi.getUpdateTweets())
 
 
 @app.route("/getDispatches")
@@ -46,7 +52,7 @@ def getIdleCenters():
         return "[]"
     data = []
     for center in disp.centers:
-        data.append( {"lat":center.location.latitude,"lon":center.location.longitude,"people":center.responderNumbers} )
+        data.append( [{"lat":center.location.latitude,"lng":center.location.longitude},center.responderNumbers] )
     return json.dumps(data)
 
 
@@ -57,7 +63,7 @@ def getUnresolvedRegions():
         return "[]"
     data = []
     for region in disp.affectedRegions:
-        data.append( {"lat":region.location.latitude,"lon":region.location.longitude,"people":region.populationCount} )
+        data.append( [{"lat":region.location.latitude,"lng":region.location.longitude},region.populationCount] )
     return json.dumps(data)
 
 
@@ -69,6 +75,7 @@ def worker():
         disp = ManageSit(victims, centers)
         assocs = disp.dispatch()
         print(assocs)
+        time.sleep(1)
 
 
 
