@@ -1,3 +1,5 @@
 wikidata
 wptools
 reverse_geocoder
+TwitterSearch
+requests

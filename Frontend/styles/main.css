@@ -1,0 +1,21 @@
+/*  GRID OF TWO  */
+.span_map {
+	width: 50%;
+	height: 100%;
+	background-color: #123133;
+}
+.span_tweets {
+	width: 50%;
+	height: 100%;
+	background-color: #AAAAAA;
+}
+
+#map {
+  height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

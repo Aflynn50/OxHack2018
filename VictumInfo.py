@@ -67,7 +67,6 @@ def azureApi(geolocs):
                     y.remove(z)
     return geolocs
 
-
 def milesToLat(x):
     return x/69.2
 

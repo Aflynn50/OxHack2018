@@ -50,13 +50,17 @@ class ManageSit:
             if affPopCount * 0.1 >= centResNum:
                 seenCenters.add(cent)
                 self.affectedRegions[aff].populationCount -= centResNum * 10
+                numAssigned = centResNum
             else:
                 seenAffected.add(aff)
                 self.centers[cent].responderNumbers -= math.ceil(affPopCount * 0.1)
                 if self.centers[cent].responderNumbers == 0:
                     seenCenters.add(cent)
+                numAssigned = math.ceil(affPopCount * 0.1)
 
-            assigned.append((aff, cent))
+            assigned.append((self.affectedRegions[aff].location,
+                             self.centers[cent].location,
+                             numAssigned))
 
         newAff = []
         for idxAff, affectedRegion in enumerate(self.affectedRegions):
