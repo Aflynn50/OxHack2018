@@ -4,6 +4,7 @@
         <meta name="viewport" content="width=device-width">
         <title>Oxaster - Dashboard</title>
         <link href="styles/main.css" rel="stylesheet" type="text/css">
+        <script src="js/jquery.min.js"></script>
     </head>
     <body>
     <div class="section group">
@@ -19,6 +20,7 @@
     <script type="text/javascript">
       // This example creates a simple polygon representing the Bermuda Triangle.
 
+      var infoWindows = [];
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 5,
@@ -26,43 +28,82 @@
           mapTypeId: 'terrain'
         });
 
-        // Define the LatLng coordinates for the polygon's path.
-        var victims = [
-          {lat: 25.774, lng: -80.190},
-          {lat: 25.774, lng: -81.190}
-        ];
+        var pairs = [];
+        var unusedCenters = [];
+        var notReachedVictims = [];
 
-        var firstResponders = [
-          {lat: 25.466, lng: -66.118},
-          {lat: 32.321, lng: -64.757}
-        ];
-
-        var line = new google.maps.Polyline({
-          paths: [victims[0], firstResponders[0]],
-          strokeColor: '#FF0000',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#FF0000',
-          fillOpacity: 0.35
+        $.ajaxSetup({
+          async: false
         });
 
-        var line2 = new google.maps.Polyline({
-          paths: [victims[1], firstResponders[1]],
-          strokeColor: '#FF0000',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#FF0000',
-          fillOpacity: 0.35
+        $.getJSON( "http://127.0.0.1:8000/test.json", function( data ) {
+          $.each( data, function( key, val ) {
+            pairs.push( val );
+          });
         });
+        $.getJSON( "http://127.0.0.1:8000/test1.json", function( data ) {
+          $.each( data, function( key, val ) {
+            unusedCenters.push( val );
+          });
+        });
+        // $.getJSON( "http://127.0.0.1:8000/test2.json", function( data ) {
+        //   $.each( data, function( key, val ) {
+        //     notReachedVictims.push( val );
+        //   });
+        // });
 
-        //rectangle.addListener('clicked', showNewRect);
+        var lineSymbol = {
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+        };
 
-        line.setMap(map);
-        line2.setMap(map);
+        for (var i = 0; i < pairs.length; i++) {
+          var line = new google.maps.Polyline({
+            path: [pairs[i][0], pairs[i][1]],
+            geodesic: true,
+            strokeColor: '#000000',
+            strokeOpacity: 1.0,
+            strokeWeight: 3,
+            icons: [{
+              icon: lineSymbol,
+              offset: '100%'
+            }],
+          });
+          var infowindow = new google.maps.InfoWindow();
+          createListener(infowindow, line, String(pairs[i][2]), map)
+          line.setMap(map);
+        }
+
+        for (var i = 0; i < unusedCenters.length; i++) {
+          var circle = new google.maps.Circle({
+            strokeColor: '#00FF00',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#00FF00',
+            fillOpacity: 0.35,
+            map: map,
+            center: unusedCenters[i][0],
+            radius: Math.sqrt(unusedCenters[i][1]) * 10000
+          });
+          var infowindow = new google.maps.InfoWindow();
+          createListener(infowindow, circle, String(unusedCenters[i][1]), map)
+          circle.setMap(map);
+        }
+
+      }
+
+      function createListener(infowindow, obj, val, map) {
+        obj.addListener('click', function (event) {
+          infowindow.setPosition(event.latLng);
+          infowindow.setContent(val);
+          infowindow.open(map);
+        });
       }
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYVfuxXdZrD3D0FZAz53eKROpXCDFwYFQ&callback=initMap">
     </script>
+    <div id="ttp" class="tooltip" vi>
+    <span class="tooltiptext" id="ttptx">Tooltip text</span>
+    </div>
     </body>
 </html>
