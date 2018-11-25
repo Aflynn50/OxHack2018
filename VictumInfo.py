@@ -89,4 +89,3 @@ def getUpdateTweets():
    
     return returnlist
 
-print(getUpdateTweets())
