@@ -67,18 +67,3 @@ def azureApi(geolocs):
                     y.remove(z)
     return geolocs
 
-
-               
-print(getVictims())
-
-
-
-azurekey = "29c7bf1a559d4d2e8e83db07740b33eb"
-text_analytics_base_url = "https://uksouth.api.cognitive.microsoft.com/text/analytics/v2.0/"
-sentiment_api_url = text_analytics_base_url + "sentiment"
-documents = { 'documents' : [{'id':1,'text':"I fucking love my bloody mother",'language':'en'}]}
-
-headers   = {"Ocp-Apim-Subscription-Key": azurekey}
-response  = requests.post(sentiment_api_url, headers=headers, json=documents)
-sentiments = response.json()
-print(sentiments)

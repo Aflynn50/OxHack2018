@@ -1,4 +1,5 @@
-#from geopy.geocoders import Nominatim
+# TODO: better handlig of exceptions
+
 from GeoInfo import GeoPosition,VictimInfo,VictimRegion
 import wptools
 from wikidata.client import Client
@@ -39,6 +40,7 @@ def getVictimRegion(victims):
                     population = int(population[1:])
                 except:
                     pass
+
             if population>0:
                 thisRegion = VictimRegion(victim.location,population)
                 thisRegionCount = RegionCount(thisRegion,1)
@@ -59,6 +61,6 @@ def getVictimRegion(victims):
     finalRegions = []
     for countedRegionName in regionCounts:
         thisRegionCount = regionCounts[countedRegionName]
-        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.00:
+        if thisRegionCount.reportCount / thisRegionCount.region.populationCount > 0.00: #  TODO: threshold tbd
             finalRegions.append(thisRegionCount.region)
     return finalRegions
