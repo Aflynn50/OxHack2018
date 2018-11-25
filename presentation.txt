@@ -3,3 +3,32 @@ We are the team demonic non-deterministcs
 We developed a web application that answers the JP Morgan challenge.
 
 Our web app scrapes real time data from twitter, using
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Victims can use cirtain hashtags in tweets that will be picked up by us to notify us of their location
+
+We update first responders with breaking news and active devlopments in the area as they are on their way to the location
+
+TO ADD:
+
+use google maps api to find route from volenteer location to the person is distress
+
+
