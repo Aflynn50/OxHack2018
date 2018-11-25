@@ -1,4 +1,3 @@
-# TODO: better handlig of exceptions
 
 from GeoInfo import GeoPosition,VictimInfo,VictimRegion
 import wptools

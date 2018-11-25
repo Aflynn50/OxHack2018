@@ -4,9 +4,13 @@ import math
 
 
 class ManageSit:
-    def __init__(self, victims, centers):
-        self.affectedRegions = dem.getVictimRegion(victims)
+    def __init__(self, victims, centers, victimsRegions, usingTestData):
+        if usingTestData:
+            self.affectedRegions = victimsRegions
+        else:
+            self.affectedRegions = dem.getVictimRegion(victims)
         self.centers = centers
+
 
     def addCenter(self, center):
         self.centers.append(center)
