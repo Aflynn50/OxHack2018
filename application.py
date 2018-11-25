@@ -18,6 +18,9 @@ centers.append(VolunteersCenter(GeoPosition(44.3, 28, 4), 1))
 disp = -1
 assocs = -1
 
+@app.route("/")
+def index():
+    return "yoyoyo"
 
 
 @app.route("/getDispatches")
