@@ -33,7 +33,7 @@ def getVictimRegion(victims):
                 wikipage = None
                 wikidataPage = None
                 try:
-                    wikipage = wptools.page(part).get_parse()
+                    wikipage = wptools.page(part,silent=True).get_parse()
                     client = Client()
                     wikidataPage = client.get(wikipage.data['wikibase'],load=True)
                     population = wikidataPage.data['claims']['P1082'][0]['mainsnak']['datavalue']['value']['amount']
