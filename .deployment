@@ -1,2 +1,2 @@
 [config]
-command = sudo apt-get install libssl-dev
+command = apt-get install libssl-dev
