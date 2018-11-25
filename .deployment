@@ -1,2 +1,3 @@
 [config]
-command = chmod +x deploy.cmd && deploy.cmd
+command = chmod +x deploy.cmd  \
+                && deploy.cmd
